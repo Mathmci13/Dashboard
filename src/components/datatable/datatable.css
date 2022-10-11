@@ -1,0 +1,23 @@
+.datatable {
+  height: 600px;
+  padding: 20px;
+}
+
+.datatable .cellWithImg {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.datatable .cellWithImg .cellImg {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  margin-right: 20px;
+}
+/*# sourceMappingURL=datatable.css.map */

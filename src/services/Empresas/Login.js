@@ -1,7 +1,11 @@
 import { API } from "../axios-config";
 
-const empresaRoute = '/Empresas'
+const loginRoute = '/Empresas/Login'
 
-const login = async(email:Number, senha:string) =>{
-  API.post(empresaRoute, {email,senha})    
+const login = async(email, senha) =>{
+  API.post(loginRoute, {email,senha})    
+}
+
+export const LoginService = {
+  login,
 }

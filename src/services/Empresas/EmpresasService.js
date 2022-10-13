@@ -1,12 +1,14 @@
+import { Environment } from "../../configs/environment";
 import { API } from "../axios-config";
 
 const empresaRoute = '/Empresas'
 
-// const GetAll = async (): Promise<IEmpresa | Error> =>{
 const GetAll = async () =>{
   try {
       const { data,headers } = await API.get(empresaRoute, {
-
+        headers: {
+          'gsoft-wd-token': window.localStorage.getItem(Environment.STORAGE_TOKEN_KEY_NAME)
+        }
       })
   
       if (data){
@@ -25,11 +27,12 @@ const GetAll = async () =>{
   }
 } 
 
-// const GetById = async (): Promise<IEmpresa | Error> =>{
 const GetById = async () =>{
   try {
     const { data } = await API.get(empresaRoute,{
-
+      headers: {
+        'gsoft-wd-token': window.localStorage.getItem(Environment.STORAGE_TOKEN_KEY_NAME)
+      }
     })
 
     if (data){

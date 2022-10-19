@@ -8,21 +8,30 @@ import Single from "./pages/single/Single";
 import {BrowserRouter,Routes,Route,} from "react-router-dom";
 import { produtctInputs, userInputs } from "./formSource";
 import "./style/dark.scss"
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { DarkModeContext } from "./context/darkModeContext";
+import { AuthContext } from "./context/AuthContext";
+
 
 
 function App() {
 
   const{darkMode} = useContext(DarkModeContext)
-
+  const{authentication} = useContext(AuthContext)
+  // console.log(authentication)
+  // const [token, setToken] = useState();
+  
+  // if (!token) {
+  //   return <Login setToken={setToken} />
+  // }
   return (
     <div className={darkMode ? "app dark" : "app"}>
     <BrowserRouter>
       <Routes>
         <Route path = "/">
+          {authentication.isAuthorized ?  <Route index element={<Home/>}/> : <Route path="login" index element={<Login/>}/> }
           <Route index element={<Home/>}/>
-          <Route path="login" element={<Login/>}/>
+          {/* <Route path="login" element={<Login/>}/> */}
           <Route path="users">
             <Route index element = {<List/>}/>
             <Route path=":userId" element={<Single/>}/>

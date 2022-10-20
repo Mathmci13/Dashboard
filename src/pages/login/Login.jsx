@@ -1,25 +1,16 @@
-import React, { useContext, useState } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import React, { useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
-import { LoginService } from "../../services/Empresas/LoginService";
 
 function Login() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
 
-
-// const auth = useContext(AuthContext)
 const auth = useAuth()
 
  const onSubmit = () => {
   const response = auth.login({email,senha})
-  // const response = await LoginService.login(email, senha)
   console.log(response)
 }
- async function login(email, senha) {
-    const response = await LoginService.login(email, senha);
-    console.log(response);
-  }
 
   return (
     <div>

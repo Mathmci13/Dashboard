@@ -28,26 +28,24 @@ const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const initAuth = async () =>{
-      setIsAuthorized(true)
-      setLoading(false)
+      // setLoading(false)
 
       const storedToken = await LoginService.getToken()
-      console.log('oi ', storedToken)
       if (storedToken instanceof Error) {
         return console.error(storedToken)
       }
       if (storedToken){
-        setLoading(true)
+        console.log('dentro do if: ',storedToken)
+        // setLoading(true)
 
         // LoginService.getUserData
         // LoginService.setUser
-        setLoading(false)
+        // setLoading(false)
       }
     }
     initAuth()
   }, [])
   
-  // const handleLogin = (params: LoginParams) => {
   const handleLogin = (params) => {
     LoginService.login(params.email, params.senha).then(response => {
       setLoading(true)

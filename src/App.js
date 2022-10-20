@@ -28,9 +28,8 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route>
-          {console.log('AQUI: ',token)}
           {token ?  <Route path="dashboard" element={<Home/>}/> : <Route path="login" index element={<Login/>}/> }
-          {/* <Route index element={<Home/>}/> */}
+          {/* <Route index element={<Login/>}/> */}
           <Route path="dashboard" element={<Home/>}/>
           <Route path="login" element={<Login/>}/>
           <Route path="users">

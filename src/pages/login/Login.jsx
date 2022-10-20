@@ -1,5 +1,5 @@
-import React, { useContext, useState } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import React, { useState } from "react";
+import { useAuth } from "../../hooks/useAuth";
 import { LoginService } from "../../services/Empresas/LoginService";
 
 function Login() {
@@ -7,7 +7,8 @@ function Login() {
   const [senha, setSenha] = useState('');
 
 
-const auth = useContext(AuthContext)
+// const auth = useContext(AuthContext)
+const auth = useAuth
 
  const onSubmit = async () => {
   const response = await auth.login({email,senha})

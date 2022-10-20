@@ -1,10 +1,19 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { AuthContext } from "../../context/AuthContext";
 import { LoginService } from "../../services/Empresas/LoginService";
 
 function Login() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
 
+
+const auth = useContext(AuthContext)
+
+ const onSubmit = async () => {
+  const response = await auth.login({email,senha})
+  // const response = await LoginService.login(email, senha)
+  console.log(response)
+}
  async function login(email, senha) {
     const response = await LoginService.login(email, senha);
     console.log(response);
@@ -30,10 +39,11 @@ function Login() {
           value={senha}
           onChange={(e) => setSenha(e.target.value)}
         ></input>
-        <input value='Enviar'type="button" onClick={() => login(email, senha)}></input>
+        <input value='Enviar'type="button" onClick={onSubmit}></input>
       </form>
     </div>
   );
 }
+
 
 export default Login;

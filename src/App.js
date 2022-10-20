@@ -5,7 +5,7 @@ import New from "./pages/new/New";
 import List from "./pages/list/List";
 import Single from "./pages/single/Single";
 
-import {BrowserRouter,Routes,Route,} from "react-router-dom";
+import {BrowserRouter,Routes,Route, Navigate,} from "react-router-dom";
 import { produtctInputs, userInputs } from "./formSource";
 import "./style/dark.scss"
 import { useContext, useState } from "react";
@@ -17,8 +17,7 @@ import { AuthContext } from "./context/AuthContext";
 function App() {
 
   const{darkMode} = useContext(DarkModeContext)
-  const{authentication} = useContext(AuthContext)
-  // console.log(authentication)
+  const{ token } = useContext(AuthContext)
   // const [token, setToken] = useState();
   
   // if (!token) {
@@ -28,10 +27,12 @@ function App() {
     <div className={darkMode ? "app dark" : "app"}>
     <BrowserRouter>
       <Routes>
-        <Route path = "/">
-          {authentication.isAuthorized ?  <Route index element={<Home/>}/> : <Route path="login" index element={<Login/>}/> }
-          <Route index element={<Home/>}/>
-          {/* <Route path="login" element={<Login/>}/> */}
+        <Route>
+          {console.log('AQUI: ',token)}
+          {token ?  <Route path="dashboard" element={<Home/>}/> : <Route path="login" index element={<Login/>}/> }
+          {/* <Route index element={<Home/>}/> */}
+          <Route path="dashboard" element={<Home/>}/>
+          <Route path="login" element={<Login/>}/>
           <Route path="users">
             <Route index element = {<List/>}/>
             <Route path=":userId" element={<Single/>}/>
@@ -43,6 +44,7 @@ function App() {
             <Route path="new" element={<New inputs = {produtctInputs} title = "Adicionar novo Produto"/>}/>
           </Route>
         </Route>
+        <Route path="*" element={<Navigate to ="/login" />} />
       </Routes>
     </BrowserRouter>
     </div>

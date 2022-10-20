@@ -1,10 +1,7 @@
 // ** React Imports
 import { createContext, useEffect, useState } from 'react'
+
 import { LoginService } from '../services/Empresas/LoginService'
-
-// ** Types
-// import { AuthValuesType, ErrCallbackType, LoginParams, UserLogged } from './types'
-
 
 // ** Defaults
 const defaultProvider = {
@@ -52,7 +49,7 @@ const AuthProvider = ({ children }) => {
   
   // const handleLogin = (params: LoginParams) => {
   const handleLogin = (params) => {
-    LoginService.login(params.username, params.password).then(response => {
+    LoginService.login(params.email, params.senha).then(response => {
       setLoading(true)
 
       if (response instanceof Error) {
@@ -62,7 +59,7 @@ const AuthProvider = ({ children }) => {
       setToken(response)
       setLoading(false)
 
-      // redirecionar /home
+      document.location.replace('/dashboard')
     })
     .finally(()=>{
       setLoading(false)
@@ -74,6 +71,7 @@ const AuthProvider = ({ children }) => {
     setIsAuthorized(false)
     await LoginService.clearUser()
     await LoginService.clearToken()
+    document.location.replace('/login')
     // redirecionar para login
   }
 

@@ -1,7 +1,8 @@
 import { Environment } from "../../configs/environment";
 import { API } from "../axios-config";
 
-const loginRoute = "/Empresas/Login";
+const loginRoute = "/Usuarios/Login";
+const userRoute = "/Usuarios";
 
 const login = async (email, senha) => {
   try {
@@ -61,8 +62,7 @@ const getUser = async () => {
   try {
     return (await window.localStorage.getItem("userData")) === null
       ? null
-      : // : (JSON.parse(window.localStorage.getItem('userData')!) as UserLogged)
-        JSON.parse(window.localStorage.getItem("userData"));
+      : JSON.parse(window.localStorage.getItem("userData"));
   } catch (error) {
     console.error(error);
 
@@ -71,7 +71,6 @@ const getUser = async () => {
 };
 
 const setUser = async (user) => {
-  // const setUser = async (user: UserLogged) => {
   try {
     await window.localStorage.setItem("userData", JSON.stringify(user));
   } catch (error) {
@@ -91,12 +90,13 @@ const clearUser = async () => {
   }
 };
 
-// const getUserData = async (): Promise<AxiosResponse<UserLogged, any> | Error> => {
+///////////////////////////////////////////////////////////////////CRUD USER//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 const getUserData = async () => {
   try {
-    const data = await API.get(loginRoute, {
+    const data = await API.get(userRoute, {
       headers: {
-        "api-gsoft-token": window.localStorage.getItem(
+        "gsoft-wd-token": window.localStorage.getItem(
           Environment.STORAGE_TOKEN_KEY_NAME
         ),
       },
@@ -113,7 +113,69 @@ const getUserData = async () => {
   }
 };
 
-export const LoginService = {
+const createUser = async () => {
+  try {
+    const data = await API.post(userRoute, {
+      headers: {
+        "gsoft-wd-token": window.localStorage.getItem(
+          Environment.STORAGE_TOKEN_KEY_NAME
+        ),
+      },
+    });
+    if (data) {
+      return data;
+    }
+
+    return new Error("Erro ao cadastrar o usuário");
+  } catch (error) {
+    console.error(error);
+
+    return new Error(error || "Error ao castrar o usuário");
+  }
+};
+
+const editUser = async (id) => {
+  try {
+    const { data } = await API.put(userRoute + "/" + id, {
+      headers: {
+        "gsoft-wd-token": window.localStorage.getItem(
+          Environment.STORAGE_TOKEN_KEY_NAME
+        ),
+      },
+    });
+    if (data) {
+      return data;
+    }
+
+    return new Error("Erro ao editar o usuário");
+  } catch (error) {
+    console.error(error);
+
+    return new Error(error || "Erro ao editar o usuário");
+  }
+};
+
+const deleteUser = async (id) => {
+  try {
+    const { data } = await API.delete(userRoute + "/" + id, {
+      headers: {
+        "gsoft-wd-token": window.localStorage.getItem(
+          Environment.STORAGE_TOKEN_KEY_NAME
+        ),
+      },
+    });
+    if (data) {
+      return data;
+    }
+    return new Error("Erro ao excluir o usuário");
+  } catch (error) {
+    console.error(error);
+
+    return new Error(error || "Erro ao excluir o usuário");
+  }
+};
+
+export const UserService = {
   login,
   getToken,
   setToken,
@@ -121,5 +183,8 @@ export const LoginService = {
   getUser,
   setUser,
   clearUser,
+  createUser,
   getUserData,
+  editUser,
+  deleteUser,
 };

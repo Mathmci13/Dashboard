@@ -43,7 +43,7 @@ export const userInputs = [
     
 ];
 
-export const produtctInputs = [
+export const productInputs = [
     {
         id:1,
         label:"Titulo",

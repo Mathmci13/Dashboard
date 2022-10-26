@@ -1,7 +1,8 @@
 // ** React Imports
 import { createContext, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
-import { LoginService } from '../services/Empresas/LoginService'
+import { UserService } from '../services/Usuarios/UserService'
 
 // ** Defaults
 const defaultProvider = {
@@ -21,16 +22,18 @@ const AuthContext = createContext(defaultProvider)
 
 const AuthProvider = ({ children }) => {
   // ** States
+  const [isAuthenticated, setIsAuthenticated] = useState(defaultProvider.isAuthorized)
   const [user, setUser] = useState(defaultProvider.user)
   const [token, setToken] = useState(defaultProvider.token)
   const [loading, setLoading] = useState(defaultProvider.loading)
-  const [isAuthorized, setIsAuthorized] = useState(defaultProvider.isAuthorized)
+
+ const navigate = useNavigate()
 
   useEffect(() => {
     const initAuth = async () =>{
       // setLoading(false)
 
-      const storedToken = await LoginService.getToken()
+      const storedToken = await UserService.getToken()
       if (storedToken instanceof Error) {
         return console.error(storedToken)
       }
@@ -38,8 +41,8 @@ const AuthProvider = ({ children }) => {
         console.log('dentro do if: ',storedToken)
         // setLoading(true)
 
-        // LoginService.getUserData
-        // LoginService.setUser
+        // UserService.getUserData
+        // UserService.setUser
         // setLoading(false)
       }
     }
@@ -47,17 +50,17 @@ const AuthProvider = ({ children }) => {
   }, [])
   
   const handleLogin = (params) => {
-    LoginService.login(params.email, params.senha).then(response => {
+    UserService.login(params.email, params.senha).then(response => {
       setLoading(true)
 
       if (response instanceof Error) {
         return console.error(response)
       }
-      LoginService.setToken(response)
+      UserService.setToken(response)
       setToken(response)
       setLoading(false)
+      navigate('/dashboard')
 
-      document.location.replace('/dashboard')
     })
     .finally(()=>{
       setLoading(false)
@@ -66,10 +69,10 @@ const AuthProvider = ({ children }) => {
   }
   const handleLogout = async () => {
     setUser(null)
-    setIsAuthorized(false)
-    await LoginService.clearUser()
-    await LoginService.clearToken()
-    document.location.replace('/login')
+    setIsAuthenticated(false)
+    await UserService.clearUser()
+    await UserService.clearToken()
+    navigate('/login',)
     // redirecionar para login
   }
 
@@ -78,8 +81,8 @@ const AuthProvider = ({ children }) => {
     loading,
     setUser,
     setLoading,
-    isAuthorized,
-    setIsAuthorized,
+    isAuthenticated: isAuthenticated,
+    setIsAuthenticated: setIsAuthenticated,
     login: handleLogin,
     logout: handleLogout,
     token

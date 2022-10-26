@@ -11,21 +11,40 @@ import { useContext } from "react";
 import { DarkModeContext } from "./context/darkModeContext";
 import { AuthContext } from "./context/AuthContext";
 import Products from "./pages/products/Products";
+import { useAuth } from "./hooks/useAuth";
 
 export const AppRoutes = () => {
   const { darkMode } = useContext(DarkModeContext);
-  const { token, isAuthorized } = useContext(AuthContext);
+  // const { isAuthenticated } = useContext(AuthContext);
   // const [token, setToken] = useState();
 
   // if (!token) {
   //   return <Login setToken={setToken} />
   // }
+  const Private = ({ children }) => {
+    const { isAuthenticated } = useAuth;
+
+    if (!isAuthenticated) {
+      return <Navigate to="/login" />;
+    }
+
+    return children;
+  };
+
   return (
     <div className={darkMode ? "app dark" : "app"}>
       <Routes>
         <Route>
           <Route exact path="login" element={<Login />} />
-          <Route exact path="dashboard" element={<Home />} />
+          <Route
+            exact
+            path="dashboard"
+            element={
+              <Private>
+                <Home />
+              </Private>
+            }
+          />
           <Route path="users">
             <Route index element={<List />} />
             <Route path=":userId" element={<Single />} />
@@ -37,7 +56,7 @@ export const AppRoutes = () => {
             />
           </Route>
           <Route path="products">
-            <Route index element={<Products/>} />
+            <Route index element={<Products />} />
             <Route path=":productId" element={<Single />} />
             <Route
               path="new"

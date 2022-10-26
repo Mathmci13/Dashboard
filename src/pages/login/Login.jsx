@@ -9,7 +9,7 @@ const auth = useAuth()
 
  const onSubmit = () => {
   const response = auth.login({email,senha})
-  console.log(response)
+  console.log('response login: ' ,response)
 }
 
   return (

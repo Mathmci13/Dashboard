@@ -10,8 +10,8 @@ const defaultProvider = {
   setUser: () => null,
   loading: true,
   setLoading: () => Boolean,
-  isAuthorized: false,
-  setIsAuthorized: () => Boolean,
+  isAuthenticated: false,
+  setIsAuthenticated: () => Boolean,
   login: () => Promise.resolve(),
   logout: () => Promise.resolve(),
   token: undefined
@@ -22,7 +22,7 @@ const AuthContext = createContext(defaultProvider)
 
 const AuthProvider = ({ children }) => {
   // ** States
-  const [isAuthenticated, setIsAuthenticated] = useState(defaultProvider.isAuthorized)
+  const [isAuthenticated, setIsAuthenticated] = useState(defaultProvider.isAuthenticated)
   const [user, setUser] = useState(defaultProvider.user)
   const [token, setToken] = useState(defaultProvider.token)
   const [loading, setLoading] = useState(defaultProvider.loading)
@@ -38,7 +38,6 @@ const AuthProvider = ({ children }) => {
         return console.error(storedToken)
       }
       if (storedToken){
-        console.log('dentro do if: ',storedToken)
         // setLoading(true)
 
         // UserService.getUserData
@@ -59,6 +58,8 @@ const AuthProvider = ({ children }) => {
       UserService.setToken(response)
       setToken(response)
       setLoading(false)
+      setIsAuthenticated(true)
+      console.log(isAuthenticated)
       navigate('/dashboard')
 
     })

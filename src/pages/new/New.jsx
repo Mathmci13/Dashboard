@@ -9,7 +9,6 @@ import React from 'react'
 const New = ({inputs, title}) => {
 
   const[file ,setFile]=useState("");
-  //console.log(file);
   return (
     <div className="new">
         <Sidebar/>

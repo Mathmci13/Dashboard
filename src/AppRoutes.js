@@ -22,8 +22,7 @@ export const AppRoutes = () => {
   //   return <Login setToken={setToken} />
   // }
   const Private = ({ children }) => {
-    const { isAuthenticated } = useAuth;
-
+    const { isAuthenticated } = useAuth();
     if (!isAuthenticated) {
       return <Navigate to="/login" />;
     }

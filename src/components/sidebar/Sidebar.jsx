@@ -6,7 +6,6 @@ import StoreIcon from "@mui/icons-material/Store";
 import CreditCardIcon from "@mui/icons-material/CreditCard";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import BarChartIcon from "@mui/icons-material/BarChart";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import SettingsIcon from "@mui/icons-material/Settings";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";

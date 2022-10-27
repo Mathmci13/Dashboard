@@ -94,13 +94,14 @@ const clearUser = async () => {
 
 const getUserData = async () => {
   try {
-    const data = await API.get(userRoute, {
+    const { data } = await API.get(userRoute, {
       headers: {
         "gsoft-wd-token": window.localStorage.getItem(
           Environment.STORAGE_TOKEN_KEY_NAME
         ),
       },
     });
+
     if (data) {
       return data;
     }
@@ -115,7 +116,7 @@ const getUserData = async () => {
 
 const createUser = async () => {
   try {
-    const data = await API.post(userRoute, {
+    const { data } = await API.post(userRoute, {
       headers: {
         "gsoft-wd-token": window.localStorage.getItem(
           Environment.STORAGE_TOKEN_KEY_NAME

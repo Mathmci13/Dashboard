@@ -10,7 +10,7 @@ function Login() {
   const [senha, setSenha] = useState("");
   // const [teste, setTeste] = useState(false);
 
-  const { login, loading, token } = useAuth();
+  const { login, loading } = useAuth();
 
   const onSubmit = async () => {
     await login(email, senha);

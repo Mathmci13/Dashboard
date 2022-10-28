@@ -1,55 +1,61 @@
+import { Send } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
+import { Box, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
-import './login.scss'
+import "./login.scss";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  // const [teste, setTeste] = useState(false);
 
-  const {login, loading, token} = useAuth();
+  const { login, loading, token } = useAuth();
 
   const onSubmit = async () => {
-    console.log('token vindo do contexto',token)
-    const response = await login( email, senha );
-    console.log("response login: ", response);
+    await login(email, senha);
   };
 
+
   return (
-    <div className="login">
-      <h1 className="title">Login</h1>
+    <Box className="login" color={"purple"}>
+      <Typography variant="h4">WaveDash</Typography>
+      <Typography variant="h6">Login</Typography>
       <form className="form">
-        <div className="field">
-          <label htmlFor="email">Email</label>
-          <input
+        <Box className="field">
+          <TextField
+            label="E-mail"
             id="email"
-            title="email"
             type={"email"}
             value={email}
+            fullWidth
             onChange={(e) => setEmail(e.target.value)}
-          ></input>
-        </div>
-        <div className="field">
-          <label htmlFor="password">Senha</label>
-          <input
-            id="password"
-            title="password"
+          />
+        </Box>
+        <Box className="field">
+          <TextField
+            label="Senha"
+            id="senha"
             type={"password"}
             value={senha}
+            fullWidth
             onChange={(e) => setSenha(e.target.value)}
-          ></input>
-        </div>
+          />
+        </Box>
         <div className="actions">
-          <LoadingButton 
+          <LoadingButton
+            style={{ color: "purple", borderColor: "purple" }}
             loading={loading}
-            variant='outlined'
+            loadingPosition={"end"}
+            endIcon={<Send />}
+            variant="outlined"
             onClick={onSubmit}
           >
-            Enviar
+            Entrar
           </LoadingButton>
         </div>
       </form>
-    </div>
+    </Box>
   );
 }
 

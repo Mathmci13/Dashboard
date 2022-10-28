@@ -21,7 +21,7 @@ const AuthContext = createContext(defaultProvider);
 
 const AuthProvider = ({ children }) => {
   // ** States
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
   const [user, setUser] = useState(defaultProvider.user);
   const [token, setToken] = useState(defaultProvider.token);
   const [loading, setLoading] = useState(defaultProvider.loading);
@@ -30,47 +30,48 @@ const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const initAuth = async () => {
-      setLoading(false);
-
+      setLoading(true);
       const storedToken = await UserService.getToken();
       if (storedToken instanceof Error) {
+        setLoading(false);
+        setIsAuthenticated(false);
         return console.error(storedToken);
       }
-      if (storedToken) {
-        setIsAuthenticated(true);
-        setLoading(true);
-
-        const userData = UserService.getUserData();
-        UserService.setUser(userData);
-        setLoading(false);
+      if (storedToken) {        
+        setToken(storedToken);
+        const userData = await UserService.getUserData();
+        //retorna 401 se token editado
+        if (userData){
+          setIsAuthenticated(true)
+          await UserService.setUser(userData)
+          setLoading(false);
+          return
+        }
+        setIsAuthenticated(false)
       }
-      setIsAuthenticated(false);
       setLoading(false);
     };
     initAuth();
   }, []);
 
   const handleLogin = async (email, senha) => {
-    UserService.login(email, senha)
-      .then((response) => {
-        setLoading(true);
-        if (response instanceof Error) {
-          return console.error(response);
-        }
-        UserService.setToken(response);
-        setToken(response);
+    setLoading(true);
+    try {
+      const response = await UserService.login(email, senha);
+      if (response instanceof Error) {
         setLoading(false);
-        setIsAuthenticated(true);
-        UserService.getUserData().then((res) =>
-        {
-          UserService.setUser(res)
-        })
-
-        // navigate('/dashboard')
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+        return console.error(response);
+      }
+      UserService.setToken(response);
+      setToken(response);
+      setIsAuthenticated(true);
+      const userData = await UserService.getUserData();
+      UserService.setUser(userData);
+      setLoading(false);
+      navigate("/dashboard");
+    } finally {
+      setLoading(false);
+    }
   };
   const handleLogout = async () => {
     setUser(null);
@@ -91,6 +92,8 @@ const AuthProvider = ({ children }) => {
     logout: handleLogout,
     token,
   };
+
+  console.log("Auntenticou?:", isAuthenticated);
 
   return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>;
 };

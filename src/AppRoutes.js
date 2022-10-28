@@ -9,21 +9,16 @@ import { productInputs, userInputs } from "./formSource";
 import "./style/dark.scss";
 import { useContext } from "react";
 import { DarkModeContext } from "./context/darkModeContext";
-import { AuthContext } from "./context/AuthContext";
 import Products from "./pages/products/Products";
 import { useAuth } from "./hooks/useAuth";
 
 export const AppRoutes = () => {
   const { darkMode } = useContext(DarkModeContext);
-  // const { isAuthenticated } = useContext(AuthContext);
-  // const [token, setToken] = useState();
 
-  // if (!token) {
-  //   return <Login setToken={setToken} />
-  // }
   const Private = ({ children }) => {
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated,logout  } = useAuth();
     if (!isAuthenticated) {
+      logout()
       return <Navigate to="/login" />;
     }
 
